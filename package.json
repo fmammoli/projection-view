@@ -1,0 +1,46 @@
+{
+  "name": "projection-view",
+  "version": "1.0.0",
+  "description": "A simple threes app for projecting csi data",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "rm -rf ./development && rm -rf ./.cache && parcel public/index.html --out-dir development -p 3000",
+    "build": "parcel build public/index.html --out-dir dist --public-url ./",
+    "prebuild-dev": "shx rm -rf dist/*",
+    "build-dev": "parcel build ./src/index.html --no-minify --public-url ./",
+    "prebuild": "shx rm -rf dist/*",
+    "push-gh-pages": "push-dir --dir=dist --branch=gh-pages --cleanup --verbose"
+  },
+  "staticFiles": {
+    "staticPath": [
+      {
+        "staticPath": "static",
+        "staticOutDir": "static/"
+      }
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fmammoli/projection-view.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fmammoli/projection-view/issues"
+  },
+  "homepage": "https://github.com/fmammoli/projection-view#readme",
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/runtime-corejs2": "^7.13.10",
+    "parcel-bundler": "^1.12.5",
+    "parcel-plugin-static-files-copy": "^2.5.1",
+    "shx": "^0.3.2"
+  },
+  "dependencies": {
+    "papaparse": "^5.3.0",
+    "three": "^0.126.1"
+  }
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link rel="stylesheet" href="../css/main.css" />
+    <title>Forest Futures</title>
+    <script
+      defer
+      src="https://unpkg.com/smoothscroll-polyfill@0.4.4/dist/smoothscroll.min.js"
+    ></script>
+  </head>
+  <body>
+    <!-- <section class="start-part" id="start-section">
+      <div class="start-elements">
+        <div class="title-bg title">
+          <h1 class="title">Projection View</h1>
+        </div>
+      </div>
+    </section> -->
+
+    <section class="space-container" id="hipervolume">
+      <div id="space"></div>
+      <div id="info" class="info info-bg">
+        <h3>Dentro do Hipervolume</h3>
+        <p>
+          Controles:<br />Movimento - clique e arraste, Scroll para zoom, Clique
+          para interagir.
+        </p>
+        <button class="load-data">Carregar</button>
+      </div>
+
+      <div class="settings-container">
+        <form id="axis-form">
+          <div>
+            <label for="x-axis">X Axis: </label>
+            <select id="x-axis-settings" name="selectX">
+              
+            </select>
+            <span>* <input id="x-axis-factor" type="number"></span>
+          </div>
+          <div>
+            <label for="y-axis">Y Axis: </label>
+            <select id="y-axis-settings" name="selectY">
+              
+            </select>
+            <span>* <input id="y-axis-factor" type="number"></span>
+          </div>
+          <div>
+            <label for="z-axis">Z Axis: </label>
+            <select id="z-axis-settings" name="selectZ">
+              
+            </select>
+            <span>* <input id="z-axis-factor" type="number" ></span>
+            
+          </div>
+          <div class="submit-container"><div>Data Count: <span id="count"></span></div>
+          <button type="submit" class="btn-update">Update</button></div>
+          
+        </form>
+        
+    </section>
+
+    <div class="modal-bg">
+      <div id="modal" class="modal">
+        <h1>Infos</h1>
+        <ul id="attr-list">
+          
+          <!-- <li>Species name: <span id="species"></span></li>
+          <li>Occurennces at FACE Plots: <span id="n"></span></li>
+          <li>Local usage: <span id="usage"></span></li>
+          <li>Obs: <span id="obs"></span></li>
+          <li>Source: <span id="source"></span></li> -->
+          <!-- <span class="close"> X</span> -->
+          <!-- <li>
+            GBIF Link:
+            <a
+              id="gbif-link"
+              href=""
+              style="color: blue"
+              target="_blank"
+              rel="noreferrer noopener"
+            ></a>
+          </li>
+          <div>Images</div>
+          <li class="gbif-container">
+            <figure>
+              <img class="gbif-img" src="" alt="" />
+            </figure>
+            <figure>
+              <img class="gbif-img" src="" alt="" />
+            </figure>
+            <figure>
+              <img class="gbif-img" src="" alt="" />
+            </figure>
+            <figure>
+              <img class="gbif-img" src="" alt="" />
+            </figure>
+          </li> -->
+        </ul>
+        <div class="close">X</div>
+          <div class="btns-container">
+            <button class="kill" id="kill-btn">Remover</button>
+          </div>
+      </div>
+    </div>
+
+    <script src="../src/app.js"></script>
+  </body>
+</html>
