@@ -70,5 +70,13 @@ function axisSelection(DATA_TABLE, axisData) {
       zf: zFactor.value,
     });
   }
+
+  function clear() {
+    xSelect.innerHTML = "";
+    ySelect.innerHTML = "";
+    zSelect.innerHTML = "";
+  }
+
+  return { clear };
 }
 export default axisSelection;

@@ -53,84 +53,87 @@ function spaceSection(DATA_TABLE, axisData) {
     orthographicCamera.position.z = 500;
 
     // world
+    console.log(scene);
 
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xcccccc);
+    console.log("first");
+    if (scene === undefined) {
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xcccccc);
 
-    new RGBELoader()
-      .setDataType(THREE.UnsignedByteType)
-      .load(hdrImg, function (texture) {
-        const envMap = pmremGenerator.fromEquirectangular(texture).texture;
+      new RGBELoader()
+        .setDataType(THREE.UnsignedByteType)
+        .load(hdrImg, function (texture) {
+          const envMap = pmremGenerator.fromEquirectangular(texture).texture;
 
-        scene.background = envMap;
-        scene.environment = envMap;
+          scene.background = envMap;
+          scene.environment = envMap;
 
-        texture.dispose();
-        pmremGenerator.dispose();
+          texture.dispose();
+          pmremGenerator.dispose();
 
-        render();
-      });
+          render();
+        });
+      const dirLight1 = new THREE.DirectionalLight(0xffffff);
+      dirLight1.position.set(1, 1, 1);
+      scene.add(dirLight1);
 
+      const dirLight2 = new THREE.DirectionalLight(0x002288);
+      dirLight2.position.set(-1, -1, -1);
+      scene.add(dirLight2);
+
+      const ambientLight = new THREE.AmbientLight(0x222222);
+      scene.add(ambientLight);
+
+      raycaster = new THREE.Raycaster();
+
+      // renderer
+      scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      //renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1;
+      renderer.outputEncoding = THREE.sRGBEncoding;
+
+      //renderer.physicallyCorrectLights = true;
+
+      const pmremGenerator = new THREE.PMREMGenerator(renderer);
+      pmremGenerator.compileEquirectangularShader();
+
+      const space = document.querySelector("#space");
+      space.appendChild(renderer.domElement);
+
+      stats = new Stats();
+      //space.appendChild(stats.dom);
+
+      //
+      // const gui = new GUI();
+      // gui
+      //   .add(params, "orthographicCamera")
+      //   .name("use orthographic")
+      //   .onChange(function (value) {
+      //     controls.dispose();
+
+      //     createControls(value ? orthographicCamera : perspectiveCamera);
+      //   });
+
+      space.addEventListener("mousemove", onDocumentMouseMove);
+      space.addEventListener("click", onMouseClick);
+      //window.addEventListener("touchmove", onDocumentMouseMove);
+      space.addEventListener("touchstart", onMouseClick);
+      window.addEventListener("resize", onWindowResize);
+
+      createControls(perspectiveCamera);
+      createLines();
+      console.log(axisData);
+    }
     // Create Elements and populate the scene
     createItems(DATA_TABLE.length);
 
     // Create the Axis Lines
-    createLines();
 
     // lights
-
-    const dirLight1 = new THREE.DirectionalLight(0xffffff);
-    dirLight1.position.set(1, 1, 1);
-    scene.add(dirLight1);
-
-    const dirLight2 = new THREE.DirectionalLight(0x002288);
-    dirLight2.position.set(-1, -1, -1);
-    scene.add(dirLight2);
-
-    const ambientLight = new THREE.AmbientLight(0x222222);
-    scene.add(ambientLight);
-
-    raycaster = new THREE.Raycaster();
-
-    // renderer
-    scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
-    renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    //renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1;
-    renderer.outputEncoding = THREE.sRGBEncoding;
-
-    //renderer.physicallyCorrectLights = true;
-
-    const pmremGenerator = new THREE.PMREMGenerator(renderer);
-    pmremGenerator.compileEquirectangularShader();
-
-    const space = document.querySelector("#space");
-    space.appendChild(renderer.domElement);
-
-    stats = new Stats();
-    //space.appendChild(stats.dom);
-
-    //
-    // const gui = new GUI();
-    // gui
-    //   .add(params, "orthographicCamera")
-    //   .name("use orthographic")
-    //   .onChange(function (value) {
-    //     controls.dispose();
-
-    //     createControls(value ? orthographicCamera : perspectiveCamera);
-    //   });
-
-    space.addEventListener("mousemove", onDocumentMouseMove);
-    space.addEventListener("click", onMouseClick);
-    //window.addEventListener("touchmove", onDocumentMouseMove);
-    space.addEventListener("touchstart", onMouseClick);
-    window.addEventListener("resize", onWindowResize);
-
-    createControls(perspectiveCamera);
   }
 
   function createItems(n) {
@@ -197,18 +200,18 @@ function spaceSection(DATA_TABLE, axisData) {
     const zAxisLineGeometry = new THREE.BufferGeometry().setFromPoints(zAxis);
     const zAxisLine = new THREE.Line(zAxisLineGeometry, lineMaterial);
     scene.add(zAxisLine);
-
+    console.log(axisData);
     createAxisLabels(axisData);
   }
 
-  function createAxisLabels(axisData) {
+  function createAxisLabels() {
     const loader = new THREE.FontLoader();
     loader.load("./static/helvetiker_regular.typeface.json", function (font) {
       const material = new THREE.MeshPhongMaterial({
         color: 0x00ffff,
         flatShading: true,
       });
-
+      console.log(axisData);
       const geometryX = new THREE.TextGeometry(axisData.current.x, {
         font: font,
         size: 10,
@@ -364,10 +367,11 @@ function spaceSection(DATA_TABLE, axisData) {
         element.geometry.dispose();
         element.material.dispose();
         scene.remove(element);
+        element.updateMatrix();
       }
     }
     renderer.renderLists.dispose();
-    cancelAnimationFrame(reqAnimationFrameId);
+    //cancelAnimationFrame(reqAnimationFrameId);
   }
 
   function render() {
@@ -413,13 +417,22 @@ function spaceSection(DATA_TABLE, axisData) {
     console.log(axisData);
     init();
     animate();
-
+    render();
     document.addEventListener("axisUpdated", updatePositions);
+  }
+  function restart(data, aData) {
+    DATA_TABLE = data;
+    console.log(aData);
+    axisData = aData;
+    console.log(axisData);
+    //init();
+    createItems(DATA_TABLE.length);
+    render();
   }
   function clear() {
     clearScene();
   }
-  return { start, clear };
+  return { start, clear, restart };
 }
 
 export default spaceSection;

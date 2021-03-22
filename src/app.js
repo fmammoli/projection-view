@@ -10,7 +10,7 @@ function init(data) {
   let axisData = axisDataComp();
   let keys = Object.keys(DATA_TABLE[0]);
 
-  axisData.update({ x: keys[0], y: keys[1], z: keys[2], xf: 1, yf: 1, zf: 1 });
+  axisData.update({ x: keys[0], y: keys[0], z: keys[0], xf: 1, yf: 1, zf: 1 });
 
   let drop = dropHandle(DATA_TABLE, axisData);
   let axis = axisSelection(DATA_TABLE, axisData);
@@ -18,10 +18,13 @@ function init(data) {
   space.start(DATA_TABLE, axisData);
   console.log(space);
   document.addEventListener("tableUpdated", function (e) {
-    init(e.detail.data);
+    // init(e.detail.data);
     DATA_TABLE = finalDataTable(e.detail.data);
+    axis.clear();
     axisData = axisDataComp();
     keys = Object.keys(DATA_TABLE[0]);
+
+    space.clear();
 
     axisData.update({
       x: keys[0],
@@ -35,8 +38,7 @@ function init(data) {
     drop = dropHandle(DATA_TABLE, axisData);
     axis = axisSelection(DATA_TABLE, axisData);
 
-    space.clear();
-    space.start(DATA_TABLE, axisData);
+    space.restart(DATA_TABLE, axisData);
   });
 }
 init(attr2);
